@@ -1,29 +1,39 @@
-import * as React from "react"
-import { Link } from "gatsby"
-import { StaticImage } from "gatsby-plugin-image"
+import React from 'react';
 
-import Layout from "../components/layout"
-import Seo from "../components/seo"
+import Layout from '../components/layout';
+import SEO from '../components/seo';
 
-const IndexPage = () => (
+import Skus from '../components/Products/Skus';
+import CartOverview from '../components/CartOverview';
+
+import { loadStripe } from '@stripe/stripe-js';
+import { CartProvider } from 'use-shopping-cart';
+
+const stripePromise = loadStripe(process.env.GATSBY_STRIPE_PUBLISHABLE_KEY);
+
+// Reference: https://github.com/dayhaysoos/use-shopping-cart/tree/master/examples/gatsby
+
+const CartExample = () => (
   <Layout>
-    <Seo title="Home" />
-    <h1>Hi people</h1>
-    <p>Welcome to your new Gatsby site.</p>
-    <p>Now go build something great.</p>
-    <StaticImage
-      src="../images/gatsby-astronaut.png"
-      width={300}
-      quality={95}
-      formats={["auto", "webp", "avif"]}
-      alt="A Gatsby astronaut"
-      style={{ marginBottom: `1.45rem` }}
-    />
-    <p>
-      <Link to="/page-2/">Go to page 2</Link> <br />
-      <Link to="/using-typescript/">Go to "Using TypeScript"</Link>
-    </p>
+    <SEO title="Cart Example" />
+    <h1>Checkout with cart example</h1>
+    <h2>
+      With{' '}
+      <a href="https://use-shopping-cart.netlify.app/">use-shopping-cart</a>
+    </h2>
+    <CartProvider // This component comes from the use-shopping-cart package
+      mode="client-only" // allows client-side checkout
+      stripe={stripePromise} // Our Stripe instance so we can communicate with the Stripe API
+      successUrl={`${window.location.origin}/page-2/`} // the url to redirect to after a successful purchase
+      cancelUrl={`${window.location.origin}/`} // the url to redirect to when they cancel a purchase
+      currency="USD" // US Dollars is the type of currency we are accepting
+      allowedCountries={['US', 'GB', 'CA']}
+      billingAddressCollection={true} // allows the collection of the users billing address for Stripe
+    >
+    <CartOverview /> 
+    <Skus /> 
+    </CartProvider>
   </Layout>
-)
+);
 
-export default IndexPage
+export default CartExample;
