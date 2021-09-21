@@ -3,7 +3,7 @@ import React from 'react';
 import Layout from '../components/layout';
 import SEO from '../components/seo';
 
-import Skus from '../components/Products/Skus';
+import Skus from '../components/Products/Products';
 import CartOverview from '../components/CartOverview';
 
 import { loadStripe } from '@stripe/stripe-js';
