@@ -76,6 +76,7 @@ const ProductCard = ({ product }) => {
                 <option key={price.id} value={price.id}>
                   {formatPrice(price.unit_amount, price.currency)}
                 </option>
+                
               ))}
             </select>
           </label>
